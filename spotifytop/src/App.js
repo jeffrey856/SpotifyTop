@@ -15,7 +15,9 @@ class App extends Component{
     }
     this.state = {
       loggedIn: token ? true : false,
-      serverData : {},
+      serverData : {
+        names: ['Hello User']
+      },
       string: 'None'
     }
   };
@@ -25,7 +27,21 @@ class App extends Component{
     .then((data) => {
       this.setState({
         serverData: {
-          name: data.items
+          names: data.items
+        }
+      })
+    console.log(this.state)
+    }, function(err) {
+      console.error(err);
+    });
+  }
+
+  componentDidMount(){
+    spotifyApi.getMyTopArtists()
+    .then((data) => {
+      this.setState({
+        serverData: {
+          names: data.items
         }
       })
     console.log(this.state)
@@ -47,8 +63,8 @@ class App extends Component{
   }
 
   render(){
-    const data = this.state.serverData
-    console.log(data)
+    const {names} = this.state.serverData
+    console.log(names)
     return (
       <div className="App">
         <header className="App-header">
@@ -60,7 +76,7 @@ class App extends Component{
           >
            Sign in to Spotify
           </a>
-        
+       
         <div>
           { this.state.loggedIn &&
             <button onClick = {() => this.getList()} >
@@ -68,9 +84,16 @@ class App extends Component{
             </button>
            
           }
-         loggedIn 
         </div>
-
+        <div>
+          {names.map(function(d, index){
+            return(
+              <div>
+                <li key = {index}>{d.name}</li>
+              </div>
+            )
+          })}
+        </div>
         </header>
       </div>
     );
