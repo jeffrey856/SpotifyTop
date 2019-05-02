@@ -16,37 +16,22 @@ class App extends Component{
     this.state = {
       loggedIn: token ? true : false,
       serverData : {
-        names: ['Hello User']
+        names: ['Hello User'],
+        tracks: ['Please LogIn']
       },
-      string: 'None'
     }
   };
 
-  getList(){
-    spotifyApi.getMyTopArtists()
-    .then((data) => {
-      this.setState({
-        serverData: {
-          names: data.items
-        }
-      })
-    console.log(this.state)
-    }, function(err) {
-      console.error(err);
-    });
-  }
-
   componentDidMount(){
-    spotifyApi.getMyTopArtists()
-    .then((data) => {
+    Promise.all([spotifyApi.getMyTopArtists(), spotifyApi.getMyTopTracks()])
+
+    .then(([artists, songs]) => {
       this.setState({
         serverData: {
-          names: data.items
+          names: artists.items ,
+          tracks: songs.items
         }
       })
-    console.log(this.state)
-    }, function(err) {
-      console.error(err);
     });
   }
 
@@ -63,8 +48,9 @@ class App extends Component{
   }
 
   render(){
-    const {names} = this.state.serverData
+    const {names, tracks} = this.state.serverData
     console.log(names)
+    console.log(tracks)
     return (
       <div className="App">
         <header className="App-header">
@@ -85,7 +71,9 @@ class App extends Component{
            
           }
         </div>
+        
         <div>
+          <h1>top artists: </h1>
           {names.map(function(d, index){
             return(
               <div>
@@ -94,6 +82,18 @@ class App extends Component{
             )
           })}
         </div>
+
+        <div>
+          <h1>top tracks: </h1>
+          {tracks.map(function(d, index){
+            return(
+              <div>
+                <li key = {index}>{d.name}</li>
+              </div>
+            )
+          })}
+        </div>
+        
         </header>
       </div>
     );
