@@ -16,6 +16,7 @@ class App extends Component{
     this.state = {
       loggedIn: token ? true : false,
       serverData : {
+        user: 'Hello New User Please LogIn',
         names: ['Hello User'],
         tracks: ['Please LogIn']
       },
@@ -23,16 +24,17 @@ class App extends Component{
   };
 
   componentDidMount(){
-    Promise.all([spotifyApi.getMyTopArtists(), spotifyApi.getMyTopTracks()])
+    Promise.all([spotifyApi.getMe(), spotifyApi.getMyTopArtists(), spotifyApi.getMyTopTracks()])
 
-    .then(([artists, songs]) => {
+    .then(([info, artists, songs]) => {
       this.setState({
         serverData: {
+          user: info.display_name,
           names: artists.items ,
           tracks: songs.items
         }
       })
-    });
+    })
   }
 
   getHashParams() {
@@ -48,27 +50,31 @@ class App extends Component{
   }
 
   render(){
-    const {names, tracks} = this.state.serverData
+    const {user, names, tracks} = this.state.serverData
+    console.log(user)
     console.log(names)
     console.log(tracks)
     return (
       <div className="App">
         <header className="App-header">
-         
+
           <a
             className="App-link"
             href="http://localhost:8888"
             rel="noopener noreferrer"
           >
-           Sign in to Spotify
+           Sign in to Spotify 
           </a>
-       
+        
+        <div>
+          {user}
+        </div>
+          
         <div>
           { this.state.loggedIn &&
             <button onClick = {() => this.getList()} >
                 GET LIST
             </button>
-           
           }
         </div>
         
