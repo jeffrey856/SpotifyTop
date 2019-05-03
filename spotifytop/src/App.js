@@ -16,9 +16,9 @@ class App extends Component{
     this.state = {
       loggedIn: token ? true : false,
       serverData : {
-        user: 'Hello New User Please LogIn',
-        names: ['Hello User'],
-        tracks: ['Please LogIn']
+        user: ' New User Please LogIn',
+        names: [],
+        tracks: []
       },
     }
   };
@@ -59,6 +59,7 @@ class App extends Component{
         <header className="App-header">
 
           <a
+            class = 'signInButton'
             className="App-link"
             href="http://localhost:8888"
             rel="noopener noreferrer"
@@ -67,7 +68,7 @@ class App extends Component{
           </a>
         
         <div>
-          {user}
+          Welcome {user}
         </div>
           
         <div>
