@@ -17,20 +17,28 @@ class App extends Component{
       loggedIn: token ? true : false,
       serverData : {
         user: ' New User Please LogIn',
-        names: [],
+        namesShort: [],
+        namesMed: [],
+        namesLong: [],
         tracks: []
       },
     }
   };
 
   componentDidMount(){
-    Promise.all([spotifyApi.getMe(), spotifyApi.getMyTopArtists(), spotifyApi.getMyTopTracks()])
+    Promise.all([spotifyApi.getMe(), 
+      spotifyApi.getMyTopArtists({limit: 50, time_range: 'short_term'}), 
+      spotifyApi.getMyTopArtists({limit: 50, time_range: 'medium_term'}), 
+      spotifyApi.getMyTopArtists({limit: 50, time_range: 'long_term'}), 
+      spotifyApi.getMyTopTracks()])
 
-    .then(([info, artists, songs]) => {
+    .then(([info, artists_short, artists_med, artists_long, songs]) => {
       this.setState({
         serverData: {
           user: info.display_name,
-          names: artists.items ,
+          namesShort: artists_short.items ,
+          namesMed: artists_med.items,
+          namesLong: artists_long.items,
           tracks: songs.items
         }
       })
@@ -50,38 +58,45 @@ class App extends Component{
   }
 
   render(){
-    const {user, names, tracks} = this.state.serverData
+    const {user, namesShort,namesMed,namesLong, tracks} = this.state.serverData
     console.log(user)
-    console.log(names)
     console.log(tracks)
+    if(this.state.loggedIn){
     return (
       <div className="App">
         <header className="App-header">
 
-          <a
-            class = 'signInButton'
-            className="App-link"
-            href="http://localhost:8888"
-            rel="noopener noreferrer"
-          >
-           Sign in to Spotify 
-          </a>
-        
         <div>
           Welcome {user}
         </div>
           
-        <div>
-          { this.state.loggedIn &&
-            <button onClick = {() => this.getList()} >
-                GET LIST
-            </button>
-          }
-        </div>
+        
         
         <div>
-          <h1>top artists: </h1>
-          {names.map(function(d, index){
+          <h1>top Long Term artists: </h1>
+          {namesLong.map(function(d, index){
+            return(
+              <div>
+                <li key = {index}>{d.name}</li>
+              </div>
+            )
+          })}
+        </div>
+
+        <div>
+          <h1>top Med Term artists: </h1>
+          {namesMed.map(function(d, index){
+            return(
+              <div>
+                <li key = {index}>{d.name}</li>
+              </div>
+            )
+          })}
+        </div>
+
+        <div>
+          <h1>top Short Term artists: </h1>
+          {namesShort.map(function(d, index){
             return(
               <div>
                 <li key = {index}>{d.name}</li>
@@ -104,7 +119,29 @@ class App extends Component{
         </header>
       </div>
     );
+  } else{
+    return(
+      <div className="App-header">
+        
+        <div>
+          Welcome {user}
+        </div>
+        
+        <a
+          class = 'signInButton'
+          className="App-link"
+          href="http://localhost:8888"
+          rel="noopener noreferrer"
+        >
+        Sign in to Spotify 
+        </a>
+
+      </div>
+      
+    );
+  
   }
+}
   
 }
 
