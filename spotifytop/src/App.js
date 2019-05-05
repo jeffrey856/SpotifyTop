@@ -1,5 +1,9 @@
 import React , {Component} from 'react';
 import SpotifyWebApi from 'spotify-web-api-js';
+import { Carousel } from 'react-responsive-carousel';
+import Grid from '@material-ui/core/Grid';
+
+import './carousel.css';
 import './App.css';
 
 const spotifyApi = new SpotifyWebApi();
@@ -20,7 +24,7 @@ class App extends Component{
         namesShort: [],
         namesMed: [],
         namesLong: [],
-        tracks: []
+        tracks: [],
       },
     }
   };
@@ -30,7 +34,7 @@ class App extends Component{
       spotifyApi.getMyTopArtists({limit: 50, time_range: 'short_term'}), 
       spotifyApi.getMyTopArtists({limit: 50, time_range: 'medium_term'}), 
       spotifyApi.getMyTopArtists({limit: 50, time_range: 'long_term'}), 
-      spotifyApi.getMyTopTracks()])
+      spotifyApi.getMyTopTracks({limit: 50})])
 
     .then(([info, artists_short, artists_med, artists_long, songs]) => {
       this.setState({
@@ -82,17 +86,29 @@ class App extends Component{
             )
           })}
         </div>
-
-        <div>
-          <h1>top Med Term artists: </h1>
-          {namesMed.map(function(d, index){
-            return(
-              <div>
-                <li key = {index}>{d.name}</li>
-              </div>
-            )
-          })}
-        </div>
+        
+        <Grid item xs zeroMinWidth  >
+          <div>
+            <h1>top Med Term artists: </h1>
+            <Carousel
+                transitionTime={350}  
+                showIndicators={false}
+                showThumbs={false}
+                showStatus={false} useKeyboardArrows
+                centerMode centerSlidePercentage={30}
+                emulateTouch
+                >
+            {namesMed.map(function(d, index){
+              return(
+                <div>
+                  <img src = {d.images[0].url}/>
+                  <p key = {index}>{d.name}</p>
+                </div>
+              )
+            })}
+            </Carousel>
+          </div>
+        </Grid>
 
         <div>
           <h1>top Short Term artists: </h1>
@@ -104,18 +120,28 @@ class App extends Component{
             )
           })}
         </div>
+        <Grid item xs zeroMinWidth  >
+          <div>
+            <h1>top tracks: </h1>
+            <Carousel
+              transitionTime={350}  
+              showIndicators={false}
+              showThumbs={false}
+              showStatus={false} useKeyboardArrows
+              centerMode centerSlidePercentage={40} emulateTouch
+              >
+              {tracks.map(function(d, index){
+                return(
+                  <div>
+                    <img src = {d.album.images[0].url}/>
+                    <p key = {index}>{d.name}</p>
+                  </div>
+                )
+              })}
+            </Carousel>
+          </div>
+        </Grid>
 
-        <div>
-          <h1>top tracks: </h1>
-          {tracks.map(function(d, index){
-            return(
-              <div>
-                <li key = {index}>{d.name}</li>
-              </div>
-            )
-          })}
-        </div>
-        
         </header>
       </div>
     );
