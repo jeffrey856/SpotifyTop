@@ -1,3 +1,3 @@
 # SpotifyTop
 
-A small React web app that utilzies spotify web api and mutliples js libraries.  
+A small React web app that utilzies spotify web api, React, node.js and mutliples js libraries.  
