@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
-mport { Carousel } from 'react-responsive-carousel';
+import { Carousel } from 'react-responsive-carousel';
 import Grid from '@material-ui/core/Grid';
 
-class Caro extends Component{
-  render(){
+const Caro = (props) => {
     return(
       <Grid item xs zeroMinWidth  >
           <div>
@@ -12,7 +11,7 @@ class Caro extends Component{
                 transitionTime={350}  
                 showIndicators={false}
                 showThumbs={false}
-                showStatus={false} useKeyboardArrows
+                showStatus={false}
                 centerMode centerSlidePercentage={30} emulateTouch
                 >
             {namesMed.map(function(d, index){
@@ -27,7 +26,7 @@ class Caro extends Component{
           </div>
         </Grid>
     )
-  }
+  
 }
 
 

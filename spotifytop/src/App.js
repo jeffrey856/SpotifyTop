@@ -25,16 +25,19 @@ class App extends Component{
         namesMed: [],
         namesLong: [],
         tracks: [],
+        reccs: []
       },
     }
   };
 
   componentDidMount(){
-    Promise.all([spotifyApi.getMe(), 
+    Promise.all([
+      spotifyApi.getMe(), 
       spotifyApi.getMyTopArtists({limit: 50, time_range: 'short_term'}), 
       spotifyApi.getMyTopArtists({limit: 50, time_range: 'medium_term'}), 
       spotifyApi.getMyTopArtists({limit: 50, time_range: 'long_term'}), 
-      spotifyApi.getMyTopTracks({limit: 50})])
+      spotifyApi.getMyTopTracks({limit: 50})
+    ])
 
     .then(([info, artists_short, artists_med, artists_long, songs]) => {
       this.setState({
@@ -74,8 +77,6 @@ class App extends Component{
           Welcome {user}
         </div>
           
-        
-        
         <div>
           <h1>top Long Term artists: </h1>
           {namesLong.map(function(d, index){
@@ -94,7 +95,7 @@ class App extends Component{
                 transitionTime={350}  
                 showIndicators={false}
                 showThumbs={false}
-                showStatus={false} useKeyboardArrows
+                showStatus={false} 
                 centerMode centerSlidePercentage={30}
                 emulateTouch
                 >
@@ -127,7 +128,7 @@ class App extends Component{
               transitionTime={350}  
               showIndicators={false}
               showThumbs={false}
-              showStatus={false} useKeyboardArrows
+              showStatus={false}
               centerMode centerSlidePercentage={40} emulateTouch
               >
               {tracks.map(function(d, index){
