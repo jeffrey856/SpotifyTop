@@ -21,32 +21,33 @@ class App extends Component{
       loggedIn: token ? true : false,
       serverData : {
         user: ' New User Please LogIn',
-        namesShort: [],
-        namesMed: [],
-        namesLong: [],
+        artists: [],
+        reccs:  [],
         tracks: [],
-        reccs: []
+        token: token
       },
     }
   };
 
   componentDidMount(){
     Promise.all([
-      spotifyApi.getMe(), 
-      spotifyApi.getMyTopArtists({limit: 50, time_range: 'short_term'}), 
-      spotifyApi.getMyTopArtists({limit: 50, time_range: 'medium_term'}), 
-      spotifyApi.getMyTopArtists({limit: 50, time_range: 'long_term'}), 
-      spotifyApi.getMyTopTracks({limit: 50})
+      spotifyApi.getMe(),
+      spotifyApi.getMyTopArtists({limit: 50}), 
+      spotifyApi.getMyTopTracks({limit: 50}),
+      spotifyApi.getRecommendations({
+        min_energy: 0.4,
+        seed_genres: ['hip-hop', 'pop', 'r&b'],
+        limit: 20,
+        min_popularity: 50
+      })
     ])
-
-    .then(([info, artists_short, artists_med, artists_long, songs]) => {
+    .then(([info, artists, songs, reccs]) => {
       this.setState({
         serverData: {
           user: info.display_name,
-          namesShort: artists_short.items ,
-          namesMed: artists_med.items,
-          namesLong: artists_long.items,
-          tracks: songs.items
+          artists: artists.items,
+          tracks: songs.items,
+          reccs: reccs.tracks
         }
       })
     })
@@ -65,9 +66,10 @@ class App extends Component{
   }
 
   render(){
-    const {user, namesShort,namesMed,namesLong, tracks} = this.state.serverData
+    const {user,artists, tracks, reccs} = this.state.serverData
     console.log(user)
     console.log(tracks)
+    console.log(this.state)
     if(this.state.loggedIn){
     return (
       <div className="App">
@@ -77,16 +79,7 @@ class App extends Component{
           Welcome {user}
         </div>
           
-        <div>
-          <h1>top Long Term artists: </h1>
-          {namesLong.map(function(d, index){
-            return(
-              <div>
-                <li key = {index}>{d.name}</li>
-              </div>
-            )
-          })}
-        </div>
+        
         
         <Grid item xs zeroMinWidth  >
           <div>
@@ -99,7 +92,7 @@ class App extends Component{
                 centerMode centerSlidePercentage={30}
                 emulateTouch
                 >
-            {namesMed.map(function(d, index){
+            {artists.map(function(d, index){
               return(
                 <div>
                   <img src = {d.images[0].url}/>
@@ -111,16 +104,7 @@ class App extends Component{
           </div>
         </Grid>
 
-        <div>
-          <h1>top Short Term artists: </h1>
-          {namesShort.map(function(d, index){
-            return(
-              <div>
-                <li key = {index}>{d.name}</li>
-              </div>
-            )
-          })}
-        </div>
+       
         <Grid item xs zeroMinWidth  >
           <div>
             <h1>top tracks: </h1>
@@ -142,7 +126,29 @@ class App extends Component{
             </Carousel>
           </div>
         </Grid>
-
+        
+        <Grid item xs zeroMinWidth  >
+          <div>
+            <h1>reccomendations: </h1>
+            <Carousel
+                transitionTime={350}  
+                showIndicators={false}
+                showThumbs={false}
+                showStatus={false} 
+                centerMode centerSlidePercentage={30}
+                emulateTouch
+                >
+            {reccs.map(function(d, index){
+              return(
+                <div>
+                  <img src = {d.album.images[0].url}/>
+                  <p key = {index}>{d.album.name}</p>
+                </div>
+              )
+            })}
+            </Carousel>
+          </div>
+        </Grid>
         </header>
       </div>
     );
