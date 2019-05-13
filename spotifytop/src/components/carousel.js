@@ -2,11 +2,13 @@ import React, { Component } from 'react';
 import { Carousel } from 'react-responsive-carousel';
 import Grid from '@material-ui/core/Grid';
 
-const Caro = (props) => {
-    return(
+export class Caro extends Component {
+  render(){  
+  return(
+
       <Grid item xs zeroMinWidth  >
           <div>
-            <h1>top Med Term artists: </h1>
+            <h1>top artists: </h1>
             <Carousel
                 transitionTime={350}  
                 showIndicators={false}
@@ -14,20 +16,28 @@ const Caro = (props) => {
                 showStatus={false}
                 centerMode centerSlidePercentage={30} emulateTouch
                 >
-            {namesMed.map(function(d, index){
-              return(
-                <div>
-                  <img src = {d.images[0].url}/>
-                  <p key = {index}>{d.name}</p>
-                </div>
-              )
-            })}
+              {this.props.content}
             </Carousel>
           </div>
         </Grid>
     )
-  
+  }
 }
 
-
-export default Caro;
+export class CaroContent extends Component{
+  render() {
+    const { content } = this.props;
+    return(  
+      <div>
+      {content.map(function(d, index){
+          return(
+            <div>
+              <img src = {d.images[0].url}/>
+              <p key = {index}>{d.name}</p>
+            </div>
+          )
+        })}
+      </div>
+    )
+    }
+}

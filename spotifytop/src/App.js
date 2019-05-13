@@ -3,6 +3,9 @@ import SpotifyWebApi from 'spotify-web-api-js';
 import { Carousel } from 'react-responsive-carousel';
 import Grid from '@material-ui/core/Grid';
 
+import { Tabs, TabPane } from './components/nav';
+import {Caro, CaroContent} from './components/carousel';
+
 import './carousel.css';
 import './App.css';
 
@@ -37,7 +40,7 @@ class App extends Component{
       spotifyApi.getRecommendations({
         min_energy: 0.4,
         seed_genres: ['hip-hop', 'pop', 'r&b'],
-        limit: 20,
+        limit: 50,
         min_popularity: 50
       })
     ])
@@ -67,23 +70,34 @@ class App extends Component{
 
   render(){
     const {user,artists, tracks, reccs} = this.state.serverData
+    
     console.log(user)
     console.log(tracks)
     console.log(this.state)
     if(this.state.loggedIn){
     return (
       <div className="App">
+        <Tabs>
+                <TabPane title='Tab 1'>Content 1</TabPane>
+                <TabPane title='Tab 2'>Content 2</TabPane>
+                <TabPane title='Tab 3'>Content 3</TabPane>
+            </Tabs>      
         <header className="App-header">
-
         <div>
           Welcome {user}
         </div>
           
         
         
+        <Caro>
+          <CaroContent
+            content = {artists}
+          />
+        </Caro>
+
         <Grid item xs zeroMinWidth  >
           <div>
-            <h1>top Med Term artists: </h1>
+            <h1>top artists: </h1>
             <Carousel
                 transitionTime={350}  
                 showIndicators={false}
@@ -155,7 +169,7 @@ class App extends Component{
   } else{
     return(
       <div className="App-header">
-        
+
         <div>
           Welcome {user}
         </div>
