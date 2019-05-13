@@ -1,10 +1,9 @@
 import React , {Component} from 'react';
 import SpotifyWebApi from 'spotify-web-api-js';
-import { Carousel } from 'react-responsive-carousel';
 import Grid from '@material-ui/core/Grid';
 
 import { Tabs, TabPane } from './components/nav';
-import {Caro, CaroContent} from './components/carousel';
+import {Caro, CaroContentArt, CaroContentSongs} from './components/carousel';
 
 import './carousel.css';
 import './App.css';
@@ -69,7 +68,7 @@ class App extends Component{
   }
 
   render(){
-    const {user,artists, tracks, reccs} = this.state.serverData
+    const {user, artists, tracks, reccs} = this.state.serverData
     
     console.log(user)
     console.log(tracks)
@@ -83,86 +82,32 @@ class App extends Component{
                 <TabPane title='Tab 3'>Content 3</TabPane>
             </Tabs>      
         <header className="App-header">
+        
         <div>
           Welcome {user}
-        </div>
-          
-        
+        </div>  
         
         <Caro>
-          <CaroContent
-            content = {artists}
+          <CaroContentArt
+            title = {'top artists'}
+            children = {artists}
+          />
+        </Caro>
+      
+        <Caro>
+          <CaroContentSongs
+            title = {'top Songs'}
+            children = {tracks}
           />
         </Caro>
 
-        <Grid item xs zeroMinWidth  >
-          <div>
-            <h1>top artists: </h1>
-            <Carousel
-                transitionTime={350}  
-                showIndicators={false}
-                showThumbs={false}
-                showStatus={false} 
-                centerMode centerSlidePercentage={30}
-                emulateTouch
-                >
-            {artists.map(function(d, index){
-              return(
-                <div>
-                  <img src = {d.images[0].url}/>
-                  <p key = {index}>{d.name}</p>
-                </div>
-              )
-            })}
-            </Carousel>
-          </div>
-        </Grid>
+        <Caro>
+          <CaroContentSongs
+            title = {'reccomendations'}
+            children = {reccs}
+          />
+        </Caro>
 
-       
-        <Grid item xs zeroMinWidth  >
-          <div>
-            <h1>top tracks: </h1>
-            <Carousel
-              transitionTime={350}  
-              showIndicators={false}
-              showThumbs={false}
-              showStatus={false}
-              centerMode centerSlidePercentage={40} emulateTouch
-              >
-              {tracks.map(function(d, index){
-                return(
-                  <div>
-                    <img src = {d.album.images[0].url}/>
-                    <p key = {index}>{d.name}</p>
-                  </div>
-                )
-              })}
-            </Carousel>
-          </div>
-        </Grid>
-        
-        <Grid item xs zeroMinWidth  >
-          <div>
-            <h1>reccomendations: </h1>
-            <Carousel
-                transitionTime={350}  
-                showIndicators={false}
-                showThumbs={false}
-                showStatus={false} 
-                centerMode centerSlidePercentage={30}
-                emulateTouch
-                >
-            {reccs.map(function(d, index){
-              return(
-                <div>
-                  <img src = {d.album.images[0].url}/>
-                  <p key = {index}>{d.album.name}</p>
-                </div>
-              )
-            })}
-            </Carousel>
-          </div>
-        </Grid>
         </header>
       </div>
     );
