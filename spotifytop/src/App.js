@@ -1,12 +1,12 @@
 import React , {Component} from 'react';
 import SpotifyWebApi from 'spotify-web-api-js';
-import Grid from '@material-ui/core/Grid';
 
-import { Tabs, TabPane } from './components/nav';
 import {Caro, CaroContentArt, CaroContentSongs} from './components/carousel';
+import {Welcome } from './components/Welcome_Screen';
 
 import './carousel.css';
 import './App.css';
+
 
 const spotifyApi = new SpotifyWebApi();
 
@@ -26,6 +26,7 @@ class App extends Component{
         artists: [],
         reccs:  [],
         tracks: [],
+        spotifyids: [],
         token: token
       },
     }
@@ -43,13 +44,14 @@ class App extends Component{
         min_popularity: 50
       })
     ])
+    
     .then(([info, artists, songs, reccs]) => {
       this.setState({
         serverData: {
           user: info.display_name,
           artists: artists.items,
           tracks: songs.items,
-          reccs: reccs.tracks
+          reccs: reccs.tracks,
         }
       })
     })
@@ -76,16 +78,9 @@ class App extends Component{
     if(this.state.loggedIn){
     return (
       <div className="App">
-        <Tabs>
-                <TabPane title='Tab 1'>Content 1</TabPane>
-                <TabPane title='Tab 2'>Content 2</TabPane>
-                <TabPane title='Tab 3'>Content 3</TabPane>
-            </Tabs>      
-        <header className="App-header">
         
-        <div>
-          Welcome {user}
-        </div>  
+        <header className="App-header">
+        <Welcome title = {'Welcome '} user = {user}/>
         
         <Caro>
           <CaroContentArt
@@ -93,7 +88,8 @@ class App extends Component{
             children = {artists}
           />
         </Caro>
-      
+
+        
         <Caro>
           <CaroContentSongs
             title = {'top Songs'}
@@ -114,11 +110,8 @@ class App extends Component{
   } else{
     return(
       <div className="App-header">
-
-        <div>
-          Welcome {user}
-        </div>
-        
+       
+        <Welcome title = {'Welcome to '} user = {'SpotifyTop'}/>
         <a
           class = 'signInButton'
           className="App-link"
@@ -127,6 +120,7 @@ class App extends Component{
         >
         Sign in to Spotify 
         </a>
+
 
       </div>
       
