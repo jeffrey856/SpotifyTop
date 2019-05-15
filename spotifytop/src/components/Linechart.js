@@ -6,7 +6,7 @@ const spotifyApi = new SpotifyWebApi();
 
 
 const data = {
-  labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+  labels: ['Jan', 'Feb', 'March', 'April', 'March'],
   datasets: [
     {
       label: 'loudness',
@@ -37,28 +37,59 @@ export class DoughnutExample extends Component{
 		super();
 
 		this.state = {
-			pitches: [],
+      pitches: [],
+      data : {
+        labels: [],
+        datasets: [
+          {
+            label: 'loudness',
+            fill: false,
+            lineTension: 0.1,
+            backgroundColor: '#1DB954',
+            borderColor: '#1DB954',
+            borderCapStyle: 'butt',
+            borderDash: [],
+            borderDashOffset: 0.0,
+            borderJoinStyle: 'miter',
+            pointBorderColor: '#1DB954',
+            pointBackgroundColor: '#fff',
+            pointBorderWidth: 1,
+            pointHoverRadius: 5,
+            pointHoverBackgroundColor: '#1DB954',
+            pointHoverBorderColor: '#1DB954',
+            pointHoverBorderWidth: 2,
+            pointRadius: 1,
+            pointHitRadius: 10,
+            data: []
+          }
+        ]
+      }
 		}
 	}
 	componentDidMount(){
 		Promise.all([
 			spotifyApi.getAudioAnalysisForTrack(this.props.trackProp)
-		])
+    ])
+    
 		.then((features) => {
+      var data = this.state.data
+      data.push(features[0].segments)
 			this.setState({
-				pitches: features[0].segments
-			})
+        pitches: features[0].segments,
+        data
+        })
+		
 		})
 	}
 	
   render() {
-		const {pitches} = this.state
-		console.log(pitches)
-		const { trackProp } = this.props;
+    const {pitches} = this.state
+    console.log(pitches)
+    console.log(data)
     return (
       <div>
         <h2>Line Example</h2>
-        <Line data={data} />
+        <Line data ={data} />
       </div>
     );
   }

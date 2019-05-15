@@ -26,7 +26,6 @@ class App extends Component{
         artists: [],
         reccs:  [],
         tracks: [],
-        spotifyids: [],
         token: token
       },
     }
@@ -44,7 +43,7 @@ class App extends Component{
         min_popularity: 50
       })
     ])
-    
+
     .then(([info, artists, songs, reccs]) => {
       this.setState({
         serverData: {
@@ -94,6 +93,7 @@ class App extends Component{
           <CaroContentSongs
             title = {'top Songs'}
             children = {tracks}
+            
           />
         </Caro>
 
