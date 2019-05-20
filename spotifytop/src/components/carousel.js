@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import { Carousel } from 'react-responsive-carousel';
 import Grid from '@material-ui/core/Grid';
 import '../carousel.css';
-import {DoughnutExample} from './Linechart';
+import {LineChar} from './Linechart';
+import {InfoCard} from './InfoCard'
+
 
 
 export class Caro extends Component {
@@ -35,15 +37,24 @@ export class CaroContentArt extends Component{
       showIndicators={false}
       showThumbs={false}
       showStatus={false} 
-
-      emulateTouch
       >
         {children.map((d, index) => {
             return(
-              <div>
-                <img src = {d.images[0].url}/>
-                <p key = {index}>{d.name}</p>
-              </div>
+              <Grid container spacing={24} key = {index}>
+                
+              <Grid item xs={4}>
+                <div >
+                  <img src = {d.images[0].url}/>
+                </div>
+                </Grid>
+                
+                <Grid item xs={8}>
+
+                <InfoCard 
+                    info = {d}
+                />
+                </Grid>
+              </Grid>
             )}  
           )}
        </Carousel>
@@ -70,14 +81,14 @@ export class CaroContentSongs extends Component{
       >
         {children.map((d, index) => {
             return(
-              <div>
+              <div key = {index}>
                 <Grid container spacing={24}>
-                  <Grid item xs={6}>
+                  <Grid item xs={4}>
                     <img src = {d.album.images[0].url}/>
-                    <p key = {index}>{d.name}</p>
+                    <p key = {index}>{d.name} - {d.artists[0].name}</p>
                   </Grid>
-                  <Grid item xs={6}>
-                    <DoughnutExample 
+                  <Grid item xs={4}>
+                    <LineChar 
                       trackProp = {d.id}
                     />
                   </Grid>

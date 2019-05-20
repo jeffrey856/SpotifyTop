@@ -11,7 +11,7 @@ const spotifyApi = new SpotifyWebApi();
 
 
 
-export class DoughnutExample extends Component{
+export class LineChar extends Component{
 	constructor(){
 		super();
 
@@ -20,7 +20,7 @@ export class DoughnutExample extends Component{
         labels: ['init'],
         datasets: [
           {
-            label: 'ptich',
+            label: 'Loudness',
             fill: false,
             lineTension: 0.1,
             backgroundColor: '#1DB954',
@@ -55,12 +55,12 @@ export class DoughnutExample extends Component{
       var oldDataSet = this.state;
       var pitches = [];
       var time = [];
-      for (var x = 0; x< features[0].segments.length; x +=30){
-        pitches.push(math.mean(features[0].segments[x].pitches).toFixed(2))
+      for (var x = 0; x< features[0].segments.length; x +=5){
+        pitches.push(math.mean(features[0].segments[x].loudness_max).toFixed(2))
       }
 
-      for (var x = 0; x< features[0].segments.length; x+= 30){
-         time.push((features[0].segments[x].start).toFixed(2))
+      for (var x = 0; x< features[0].segments.length; x+=5){
+         time.push((features[0].segments[x].start / 60).toFixed(2))
       }
 
       var newDataSet = {
@@ -79,10 +79,10 @@ export class DoughnutExample extends Component{
 	
   render() {
     
-    console.log(this.state)    
+    // console.log(this.state)    
     return (
       <div>
-        <h2>Pitches</h2>
+        <h2>Loudness (db) </h2>
         <Line data ={this.state} />
       </div>
     );

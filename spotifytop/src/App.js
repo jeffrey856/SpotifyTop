@@ -34,17 +34,20 @@ class App extends Component{
   componentDidMount(){
     Promise.all([
       spotifyApi.getMe(),
-      spotifyApi.getMyTopArtists({limit: 50}), 
-      spotifyApi.getMyTopTracks({limit: 50}),
+      spotifyApi.getMyTopArtists({limit: 20}), 
+      spotifyApi.getMyTopTracks({limit: 20}),
       spotifyApi.getRecommendations({
         min_energy: 0.4,
         seed_genres: ['hip-hop', 'pop', 'r&b'],
-        limit: 50,
+        limit: 20,
         min_popularity: 50
       })
     ])
 
+
+
     .then(([info, artists, songs, reccs]) => {
+
       this.setState({
         serverData: {
           user: info.display_name,
@@ -71,8 +74,6 @@ class App extends Component{
   render(){
     const {user, artists, tracks, reccs} = this.state.serverData
     
-    console.log(user)
-    console.log(tracks)
     console.log(this.state)
     if(this.state.loggedIn){
     return (
@@ -93,13 +94,12 @@ class App extends Component{
           <CaroContentSongs
             title = {'top Songs'}
             children = {tracks}
-            
           />
         </Caro>
 
         <Caro>
           <CaroContentSongs
-            title = {'reccomendations'}
+            title = {'recommendation'}
             children = {reccs}
           />
         </Caro>
