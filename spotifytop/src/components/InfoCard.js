@@ -11,7 +11,7 @@ export class InfoCard extends Component{
 		super();
 
 		this.state = {
-      related_art: [{name: ''}]
+      related_art: [{name: 'NONE'}]
     };
   }
     componentDidMount(){
@@ -30,8 +30,8 @@ export class InfoCard extends Component{
 	
   render(){
     const {info} = this.props
-    const{artists} = this.state.related_art
-    console.log(artists)
+    const{related_art} = this.state
+    console.log(related_art)
     return(
       <div >
         <h1>{info.name}</h1>
@@ -45,6 +45,7 @@ export class InfoCard extends Component{
 
         <p>Genre: {info.genres[0]}</p>
         <p>Followers: {info.followers.total} </p>
+
 
         {/* {related_art.map((d, index) => {
             return(
