@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { Carousel } from 'react-responsive-carousel';
-import Grid from '@material-ui/core/Grid';
 import '../carousel.css';
+
+import Grid from '@material-ui/core/Grid';
 import {LineChar} from './Linechart';
 import {InfoCard} from './InfoCard'
 
@@ -42,17 +43,17 @@ export class CaroContentArt extends Component{
             return(
               <Grid container spacing={24} key = {index}>
                 
-              <Grid item xs={4}>
-                <div >
-                  <img src = {d.images[0].url}/>
-                </div>
+                <Grid item xs={4}>
+                  <div >
+                    <img src = {d.images[0].url}/>
+                  </div>
                 </Grid>
-                
-                <Grid item xs={8}>
+                  
+                <Grid item xs={8} className="Card">
 
-                <InfoCard 
-                    info = {d}
-                />
+                  <InfoCard 
+                      info = {d}
+                  />
                 </Grid>
               </Grid>
             )}  

@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
 import SpotifyWebApi from 'spotify-web-api-js';
+import { Carousel } from 'react-responsive-carousel';
+import '../carousel.css';
 
 
 
@@ -11,7 +13,7 @@ export class InfoCard extends Component{
 		super();
 
 		this.state = {
-      related_art: [{name: 'NONE'}]
+      related_art: []
     };
   }
     componentDidMount(){
@@ -19,12 +21,20 @@ export class InfoCard extends Component{
        spotifyApi.getArtistRelatedArtists(this.props.info.id)
       ])
   
-  
-  
       .then(([info]) => {
-        this.setState({
-          related_art: info
-        })
+        var oldDataSet = this.state;
+        var relate = [];
+        for (var x = 0; x< info.artists.length; x++){
+          relate.push(info.artists[x])
+        }
+        
+        var newDataSet = {
+          ...oldDataSet
+        };
+
+        newDataSet.related_art = relate
+
+        this.setState(newDataSet)
       })
     }
 	
@@ -47,15 +57,25 @@ export class InfoCard extends Component{
         <p>Followers: {info.followers.total} </p>
 
 
-        {/* {related_art.map((d, index) => {
+        <Carousel
+        transitionTime={350}  
+        showIndicators={false}
+        showThumbs={false}
+        showStatus={false} 
+        
+        emulateTouch
+        >
+        {related_art.map((d, index) => {
             return(
              
                 <div key={index}>
-                  <h1>{d.artists.name}</h1>
+                  <img src = {d.images[0].url}/>
+                  <p>{d.name}</p>
                 </div>
               
             )}  
-          )}   */}
+          )}
+          </Carousel>  
       </div>
 )
   }
