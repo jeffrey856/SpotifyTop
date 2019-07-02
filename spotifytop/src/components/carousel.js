@@ -38,6 +38,7 @@ export class CaroContentArt extends Component{
       showIndicators={false}
       showThumbs={false}
       showStatus={false} 
+      emulateTouch
       >
         {children.map((d, index) => {
             return(

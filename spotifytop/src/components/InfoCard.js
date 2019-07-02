@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import SpotifyWebApi from 'spotify-web-api-js';
 import { Carousel } from 'react-responsive-carousel';
+import Grid from '@material-ui/core/Grid';
 import '../carousel.css';
 
 
@@ -43,7 +44,7 @@ export class InfoCard extends Component{
     const{related_art} = this.state
     console.log(related_art)
     return(
-      <div >
+      <div className='infocard'>
         <h1>{info.name}</h1>
         
         <a 
@@ -57,7 +58,7 @@ export class InfoCard extends Component{
         <p>Followers: {info.followers.total} </p>
 
 
-        <Carousel
+        {/* <Carousel
         transitionTime={350}  
         showIndicators={false}
         showThumbs={false}
@@ -75,7 +76,7 @@ export class InfoCard extends Component{
               
             )}  
           )}
-          </Carousel>  
+          </Carousel>   */}
       </div>
 )
   }
